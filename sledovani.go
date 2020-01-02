@@ -1,32 +1,36 @@
 package main
 
 import "fmt"
-import "math"
+import "math/big"
 
 const LIMIT = 50
 
-func pairs(n uint) (p uint) {
-	if n == 1 {
-		return 0
+func pairs(n *big.Int) (p *big.Int) {
+	if n.Cmp(big.NewInt(1)) == 0 {
+		return big.NewInt(0)
 	}
-	fibs := make([]uint, n)
-	fibs[0] = 1
-	fibs[1] = 1
+	p = &big.Int{}
+	fibs := make([]*big.Int, n.Uint64())
 	for i := range fibs[2:] {
-		fibs[i+2] = fibs[i+1] + fibs[i]
+		fibs[i+2] = big.NewInt(0)
+	}
+	fibs[0] = big.NewInt(1)
+	fibs[1] = big.NewInt(1)
+	for i := range fibs[2:] {
+		fibs[i+2].Add(fibs[i+1], fibs[i])
 	}
 	for i, fib := range fibs {
 		for _, friend := range fibs[i+1:] {
-			IsManFriend := friend%2 == 1
-			IsManFib := fib%2 == 1
+			IsManFriend := big.NewInt(0).Mod(friend, big.NewInt(2)).Cmp(big.NewInt(1)) == 0
+			IsManFib := big.NewInt(0).Mod(fib, big.NewInt(2)).Cmp(big.NewInt(1)) == 0
 			if IsManFib == IsManFriend {
 				continue
 			}
-			if isFib(fib + friend) {
-				if gcd(fib, friend) != 1 {
+			if isFib(big.NewInt(0).Add(fib, friend)) {
+				if gcd(fib, friend) {
 					continue
 				} else {
-					p++
+					p.Add(p, big.NewInt(1))
 				}
 			}
 		}
@@ -34,38 +38,44 @@ func pairs(n uint) (p uint) {
 	return
 }
 
-func isFib(n uint) bool {
-	var ques1, ques2 float64
-	ques1 = math.Sqrt(5.0*float64(n)*float64(n) + 4.0)
-	ques2 = math.Sqrt(5.0*float64(n)*float64(n) - 4.0)
-	if ques1-float64(uint(ques1)) == 0 || ques2-float64(uint(ques2)) == 0 {
+func isFib(n *big.Int) bool {
+	var ques1, ques2 *big.Float
+	ques1 = &big.Float{}
+	ques2 = &big.Float{}
+	ques1.Mul(big.NewFloat(5.0), big.NewFloat(0.0).Mul(big.NewFloat(0.0).SetInt(n), big.NewFloat(0.0).SetInt(n)))
+	ques1.Add(ques1, big.NewFloat(4.0))
+	ques1.Sqrt(ques1)
+	ques2.Mul(big.NewFloat(5.0), big.NewFloat(0).Mul(big.NewFloat(0).SetInt(n), big.NewFloat(0).SetInt(n)))
+	ques2.Sub(ques2, big.NewFloat(4.0))
+	ques2.Sqrt(ques2)
+	if ques1.IsInt() || ques2.IsInt() {
 		return true
 	}
 	return false
 }
 
-func gcd(x uint, y uint) uint {
-	if y > x {
-		x, y = y, x
+func gcd(x, y *big.Int) bool {
+	var z big.Int
+	z.GCD(nil, nil, x, y)
+	if z.Cmp(big.NewInt(1)) == 0 {
+		return false
+	} else {
+		return true
 	}
-	for y != 0 {
-		x, y = y, x%y
-	}
-	return x
 }
 
 func main() {
 	var N int
 	fmt.Scanf("%d", &N)
 	for i := 0; i < N; i++ {
-		var M uint
-		fmt.Scanf("%d", &M)
-		if M > LIMIT {
+		var M big.Int
+		fmt.Scan(&M)
+		if M.Uint64() > LIMIT {
 			for j := i; j < N; j++ {
 				fmt.Println(0)
 			}
 			return
 		}
-		fmt.Println(pairs(M))
+		fmt.Println(pairs(&M))
 	}
 }
