@@ -21,17 +21,6 @@ func pairs(n *big.Int) (p *big.Int) {
 	return
 }
 
-func gcd(x, y *big.Int) bool {
-	var z *big.Int
-	z = &big.Int{}
-	z.GCD(nil, nil, x, y)
-	if z.Cmp(big.NewInt(1)) == 0 {
-		return true
-	} else {
-		return false
-	}
-}
-
 func main() {
 	var N int
 	fmt.Scanf("%d", &N)
