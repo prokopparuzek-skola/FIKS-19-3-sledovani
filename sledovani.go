@@ -17,7 +17,9 @@ func pairs(n *big.Int) (p *big.Int) {
 	p = &big.Int{}
 	p.Div(n, big.NewInt(3))
 	p.Mul(p, big.NewInt(2))
-	p.Add(p, big.NewInt(1))
+	if n.Mod(n, big.NewInt(3)).Cmp(big.NewInt(0)) != 0 {
+		p.Add(p, big.NewInt(1))
+	}
 	return
 }
 
