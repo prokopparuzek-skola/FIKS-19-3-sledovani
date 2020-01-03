@@ -3,7 +3,7 @@ package main
 import "fmt"
 import "math/big"
 
-const LIMIT = 1e6
+const LIMIT = 1e18
 
 func pairs(n *big.Int) (p *big.Int) {
 	switch {
@@ -14,27 +14,10 @@ func pairs(n *big.Int) (p *big.Int) {
 	case n.Cmp(big.NewInt(2)) == 0:
 		return big.NewInt(2)
 	}
-	p = big.NewInt(2)
-	var previousWoman, woman bool = true, false
-	var fibA, fibP *big.Int
-	fibA, fibP = big.NewInt(3), big.NewInt(2)
-	for i := int64(4); i <= n.Int64(); i++ {
-		woman = big.NewInt(0).Mod(fibA, big.NewInt(2)).Cmp(big.NewInt(0)) == 0
-		if woman {
-			if gcd(fibA, fibP) {
-				p.Add(p, big.NewInt(1))
-			}
-		} else if previousWoman {
-			if gcd(fibA, fibP) {
-				p.Add(p, big.NewInt(1))
-			}
-		}
-		previousWoman = woman
-		swp := &big.Int{}
-		swp.Add(fibA, fibP)
-		fibP = fibA
-		fibA = swp
-	}
+	p = &big.Int{}
+	p.Div(n, big.NewInt(3))
+	p.Mul(p, big.NewInt(2))
+	p.Add(p, big.NewInt(1))
 	return
 }
 
