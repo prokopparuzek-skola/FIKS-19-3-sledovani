@@ -3,7 +3,7 @@ package main
 import "fmt"
 import "math/big"
 
-const LIMIT = 50
+const LIMIT = 1e6
 
 func pairs(n *big.Int) (p *big.Int) {
 	switch {
@@ -56,11 +56,9 @@ func main() {
 		var M big.Int
 		fmt.Scan(&M)
 		if M.Uint64() > LIMIT {
-			/*
-				for j := i; j < N; j++ {
-					fmt.Println(0)
-				}
-			*/
+			for j := i; j < N; j++ {
+				fmt.Println(0)
+			}
 			return
 		}
 		fmt.Println(pairs(&M))
