@@ -40,10 +40,10 @@ func main() {
 		fmt.Scan(&M)
 		if M.Uint64() > LIMIT {
 			for j := i; j < N; j++ {
-				fmt.Println(0)
+				fmt.Printf("0\n")
 			}
 			return
 		}
-		fmt.Println(pairs(&M))
+		fmt.Printf("%d\n", pairs(&M))
 	}
 }
