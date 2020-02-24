@@ -1,8 +1,10 @@
 package main
 
-import "testing"
-import "math/big"
-import "fmt"
+import (
+	"fmt"
+	"math/big"
+	"testing"
+)
 
 type pairsTest struct {
 	citisens uint64
@@ -11,6 +13,7 @@ type pairsTest struct {
 
 func TestPairs(t *testing.T) {
 	var testInput []pairsTest = []pairsTest{
+		{0,	0},
 		{1, 0},
 		{4, 3},
 		{25, 17},
@@ -20,6 +23,7 @@ func TestPairs(t *testing.T) {
 		{5, 3},
 		{9, 6},
 		{7, 5},
+		{13, 9},
 	}
 	for _, in := range testInput {
 		result := pairs(big.NewInt(int64(in.citisens)))

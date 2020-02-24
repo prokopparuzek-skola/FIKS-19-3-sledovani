@@ -29,12 +29,6 @@ func main() {
 	for i := 0; i < N; i++ {
 		var M big.Int
 		fmt.Scan(&M)
-		if M.Uint64() > LIMIT {
-			for j := i; j < N; j++ {
-				fmt.Printf("0\n")
-			}
-			return
-		}
 		fmt.Printf("%d\n", pairs(&M))
 	}
 }
